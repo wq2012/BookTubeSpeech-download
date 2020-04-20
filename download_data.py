@@ -30,19 +30,20 @@ def main():
     with open(video_list) as list_file:
         video_ids = json.loads(list_file.read())
 
-    for video_id in video_ids:
+    for i, video_id in enumerate(video_ids):
+        print("Downloading {}/{}: {}".format(i, len(video_ids), video_id))
         url = "https://www.youtube.com/watch?v=" + video_id
         YouTube(url).streams.filter(
             only_audio=True, file_extension="mp4")[0].download(
                 output_path=args.output_dir, filename=video_id)
-        # mp4 to wav conversion
+        # MP4 to WAV conversion.
         subprocess.check_call([
             "ffmpeg",
             "-i",
             os.path.join(args.output_dir, video_id + ".mp4"),
             os.path.join(args.output_dir, video_id + "_temp.wav"),
         ])
-        # downsample to 16kHz, and keep only the first channel
+        # Downsample to 16kHz, and keep only the first channel.
         subprocess.check_call([
             "sox",
             "-r",
