@@ -31,7 +31,7 @@ def main():
         video_ids = json.loads(list_file.read())
 
     for i, video_id in enumerate(video_ids):
-        print("Downloading {}/{}: {}".format(i, len(video_ids), video_id))
+        print("Downloading {}/{}: {}".format(i+1, len(video_ids), video_id))
         url = "https://www.youtube.com/watch?v=" + video_id
         YouTube(url).streams.filter(
             only_audio=True, file_extension="mp4")[0].download(
