@@ -31,10 +31,11 @@ def main():
         video_ids = json.loads(list_file.read())
 
     for i, video_id in enumerate(video_ids):
-        print("Downloading {}/{}: {}".format(i+1, len(video_ids), video_id))
+        print("==== Downloading {}/{}: {}".format(
+            i+1, len(video_ids), video_id))
         target_wav = os.path.join(args.output_dir, video_id + ".wav")
         if os.path.exists(target_wav):
-            print("Skipping existing wav for:", video_id)
+            print("==== Skipping existing wav for:", video_id)
             continue
         # Download MP4.
         url = "https://www.youtube.com/watch?v=" + video_id
@@ -43,7 +44,7 @@ def main():
                 only_audio=True, file_extension="mp4")[0].download(
                     output_path=args.output_dir, filename=video_id)
         except pytube.exceptions.VideoUnavailable:
-            print("Skipping unavailable video:", video_id)
+            print("==== Skipping unavailable video:", video_id)
             continue
         # MP4 to WAV conversion.
         subprocess.check_call([
