@@ -17,46 +17,51 @@ import os
 import subprocess
 from pytube import YouTube
 
+def main():
+    """The main function."""
+    parser = argparse.ArgumentParser(description="Process arguments.")
+    parser.add_argument(
+        "--output_dir", type=str, help="Where to store the output wav files.")
+    args = parser.parse_args()
 
-parser = argparse.ArgumentParser(description="Process arguments.")
-parser.add_argument(
-    "--output_dir", type=str, help="Where to store the output wav files.")
-args = parser.parse_args()
+    video_list = os.path.join(
+        os.path.dirname(os.path.realpath(__file__)),
+        "BookTubeSpeechURLs.json")
+    with open(video_list) as list_file:
+        video_ids = json.loads(list_file.read())
 
-video_list = os.path.join(
-    os.path.dirname(os.path.realpath(__file__)),
-    "BookTubeSpeechURLs.json")
-with open(video_list) as f:
-    video_ids = json.loads(f.read())
+    for video_id in video_ids:
+        url = "https://www.youtube.com/watch?v=" + video_id
+        YouTube(url).streams.filter(
+            only_audio=True, file_extension="mp4")[0].download(
+                output_path=args.output_dir, filename=video_id)
+        # mp4 to wav conversion
+        subprocess.check_call([
+            "ffmpeg",
+            "-i",
+            os.path.join(args.output_dir, video_id + ".mp4"),
+            os.path.join(args.output_dir, video_id + "_temp.wav"),
+        ])
+        # downsample to 16kHz, and keep only the first channel
+        subprocess.check_call([
+            "sox",
+            "-r",
+            "16000",
+            "-b",
+            "16",
+            "-e",
+            "signed-integer",
+            os.path.join(args.output_dir, video_id + "_temp.wav"),
+            os.path.join(args.output_dir, video_id + ".wav"),
+            "remix",
+            "1",
+        ])
+        subprocess.check_call([
+            "rm",
+            os.path.join(args.output_dir, video_id + ".mp4"),
+            os.path.join(args.output_dir, video_id + "_temp.wav")
+        ])
 
-for video_id in video_ids:
-    url = "https://www.youtube.com/watch?v=" + video_id
-    YouTube(url).streams.filter(
-        only_audio=True, file_extension="mp4")[0].download(
-            output_path=args.output_dir, filename=video_id)
-    # mp4 to wav conversion
-    subprocess.check_call([
-        "ffmpeg",
-        "-i",
-        os.path.join(args.output_dir, video_id + ".mp4"),
-        os.path.join(args.output_dir, video_id + "_temp.wav"),
-    ])
-    # downsample to 16kHz, and keep only the first channel
-    subprocess.check_call([
-        "sox",
-        "-r",
-        "16000",
-        "-b",
-        "16",
-        "-e",
-        "signed-integer",
-        os.path.join(args.output_dir, video_id + "_temp.wav"),
-        os.path.join(args.output_dir, video_id + ".wav"),
-        "remix",
-        "1",
-    ])
-    subprocess.check_call([
-        "rm",
-        os.path.join(args.output_dir, video_id + ".mp4"),
-        os.path.join(args.output_dir, video_id + "_temp.wav")
-    ])
+
+if __name__ == "__main__":
+    main()
