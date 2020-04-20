@@ -1,7 +1,7 @@
-# BlueTubeSpeech downloader
+# BookTubeSpeech-download
 
 This is a script that downloads the WAV files of the
-[BlueTubeSpeech](https://users.wpi.edu/~jrwhitehill/BookTubeSpeech/index.html)
+[BookTubeSpeech](https://users.wpi.edu/~jrwhitehill/BookTubeSpeech/index.html)
 dataset.
 
 ## Requirements
