@@ -35,6 +35,7 @@ def main():
         target_wav = os.path.join(args.output_dir, video_id + ".wav")
         if os.path.exists(target_wav):
             print("Skipping existing wav for:", video_id)
+            continue
         # Download MP4.
         url = "https://www.youtube.com/watch?v=" + video_id
         try:
