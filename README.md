@@ -1,5 +1,7 @@
 # BookTubeSpeech-download
 
+![Python application](https://github.com/wq2012/BookTubeSpeech-download/workflows/Python%20application/badge.svg)
+
 This is a script that downloads the WAV files of the
 [BookTubeSpeech](https://users.wpi.edu/~jrwhitehill/BookTubeSpeech/index.html)
 dataset.
