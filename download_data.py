@@ -60,13 +60,13 @@ def main():
         temp_wav = os.path.join(args.output_dir, video_id + "_temp.wav")
         subprocess.check_call([
             "sox",
+            temp_wav,
             "-r",
             "16000",
             "-b",
             "16",
             "-e",
             "signed-integer",
-            temp_wav,
             target_wav,
             "remix",
             "1",
