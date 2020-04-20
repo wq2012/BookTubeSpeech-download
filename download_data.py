@@ -43,7 +43,10 @@ def main():
             pytube.YouTube(url).streams.filter(
                 only_audio=True, file_extension="mp4")[0].download(
                     output_path=args.output_dir, filename=video_id)
-        except (pytube.exceptions.VideoUnavailable, pytube.exceptions.RegexMatchError, KeyError):
+        except (pytube.exceptions.VideoUnavailable,
+                pytube.exceptions.RegexMatchError,
+                KeyError,
+                IndexError):
             print("==== Skipping unavailable video:", video_id)
             continue
         # MP4 to WAV conversion.
