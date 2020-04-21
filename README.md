@@ -16,3 +16,9 @@ dataset.
 ```
 python3 download_data.py --output_dir=/path_to_download_dir
 ```
+
+## Notes
+
+Some videos may have become unavailable since the publication of the [original paper](https://users.wpi.edu/~jrwhitehill/PhamLiWhitehill_ICASSP2020.pdf), e.g. deleted by the creator.
+
+As of 2020.04.20, this script can download 8021 (out of 8450) WAV files successfully.
